@@ -6,7 +6,17 @@ A new Flutter project.
 
 In VSCode
 
-1. Install Flutter SDK & dependencies: [link](https://docs.flutter.dev/get-started/install/windows/mobile?tab=vscode)
-1. Create flutter app - Flutter: New Project
-1. Open an emulator - Flutter: Launch Emulator
-1. Run Flutter: Run -> Run Without Debugging
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+
+## Dependencies
+
+Install libraries via `flutter pub add <package-name>`
+
+- `google_fonts:6.1.0`

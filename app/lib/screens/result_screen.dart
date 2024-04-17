@@ -3,8 +3,12 @@ import 'package:app/components/result_review.dart';
 import 'package:app/data/questions.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({super.key, required this.selectedChoices});
+  const ResultScreen(
+      {super.key,
+      required this.selectedChoices,
+      required this.switchToQuestionScreen});
   final List<String> selectedChoices;
+  final void Function() switchToQuestionScreen;
 
   List<Map<String, Object>> get markedAnswers {
     List<Map<String, Object>> result = [];
@@ -38,7 +42,9 @@ class ResultScreen extends StatelessWidget {
             const SizedBox(height: 30),
             ResultReview(markedAnswers),
             const SizedBox(height: 30),
-            TextButton(onPressed: () {}, child: const Text('Restart Quiz'))
+            TextButton(
+                onPressed: switchToQuestionScreen,
+                child: const Text('Restart Quiz'))
           ],
         ),
       ),

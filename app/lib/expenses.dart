@@ -1,3 +1,4 @@
+import 'package:app/components/chart.dart';
 import 'package:app/components/expense_list.dart';
 import 'package:app/components/new_expense.dart';
 import 'package:app/models/expense_model.dart';
@@ -29,7 +30,10 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
-        context: context, builder: (ctx) => NewExpense(_addExpense));
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => NewExpense(_addExpense),
+    );
   }
 
   void _addExpense(Expense expense) {
@@ -38,26 +42,53 @@ class _ExpensesState extends State<Expenses> {
     });
   }
 
+  void _removeExpense(Expense expense) {
+    setState(() {
+      final expenseIndex = _dummyExpenses.indexOf(expense);
+      _dummyExpenses.remove(expense);
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Expense removed.'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _dummyExpenses.insert(expenseIndex, expense);
+            });
+          },
+        ),
+      ));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget content = _dummyExpenses.isEmpty
+        ? const Center(
+            child: Text(
+            'No expenses yet.\n Press "+" to start adding expense.',
+            textAlign: TextAlign.center,
+            // style: TextStyle(height: 2),
+          ))
+        : Column(
+            children: [
+              Chart(expenses: _dummyExpenses),
+              Expanded(
+                child: ExpensesList(_dummyExpenses, _removeExpense),
+              ),
+            ],
+          );
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Expense Tracker'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _openAddExpenseOverlay,
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          const Text('Chart'),
-          Expanded(
-            child: ExpensesList(_dummyExpenses),
-          ),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title: const Text('Expense Tracker'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: _openAddExpenseOverlay,
+            ),
+          ],
+        ),
+        body: content);
   }
 }

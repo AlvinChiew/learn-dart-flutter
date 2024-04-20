@@ -8,6 +8,11 @@ ColorScheme darkColorScheme = ColorScheme.fromSeed(
     seedColor: const Color.fromARGB(255, 10, 83, 68));
 
 void main() {
+  // *** LOCK PHONE ORIENTATION *** //
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  // ]).then((fn) {
   runApp(MaterialApp(
     darkTheme: ThemeData.dark().copyWith(
       useMaterial3: true,
@@ -44,4 +49,5 @@ void main() {
     // themeMode: ThemeMode.dark,
     home: const Expenses(),
   ));
+  // });
 }

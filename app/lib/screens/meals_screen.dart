@@ -4,19 +4,16 @@ import 'package:app/screens/meal_screen.dart';
 import 'package:flutter/material.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen(this.meals, this.title, this.onToggleFavorite, {super.key});
+  const MealsScreen(this.meals, this.title, {super.key});
 
   final String? title;
   final List<Meal> meals;
-  final Function(Meal meal) onToggleFavorite;
 
   @override
   Widget build(BuildContext context) {
     void overlayMealScreen(BuildContext context, Meal meal) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (ctx) => MealScreen(meal, onToggleFavorite)));
+          context, MaterialPageRoute(builder: (ctx) => MealScreen(meal)));
     }
 
     Widget content = meals.isEmpty

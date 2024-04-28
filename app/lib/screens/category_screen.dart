@@ -6,8 +6,7 @@ import 'package:app/screens/meals_screen.dart';
 import 'package:flutter/material.dart';
 
 class CategoryScreen extends StatelessWidget {
-  const CategoryScreen(this.onToggleFavorite, this.filteredMeal, {super.key});
-  final Function(Meal meal) onToggleFavorite;
+  const CategoryScreen(this.filteredMeal, {super.key});
   final List<Meal> filteredMeal;
 
   void _overlayMealsScreen(BuildContext context, MealCategory category) {
@@ -16,8 +15,7 @@ class CategoryScreen extends StatelessWidget {
         .toList();
 
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (ctx) =>
-            MealsScreen(meals, category.title, onToggleFavorite)));
+        builder: (ctx) => MealsScreen(meals, category.title)));
   }
 
   @override

@@ -1,7 +1,11 @@
+import 'dart:convert';
+
+import 'package:app/constant.dart';
 import 'package:app/data/category_data.dart';
 import 'package:app/models/category_model.dart';
 import 'package:app/models/item_model.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class NewItemScreen extends StatefulWidget {
   const NewItemScreen({super.key});
@@ -12,12 +16,47 @@ class NewItemScreen extends StatefulWidget {
 
 class _NewItemScreenState extends State<NewItemScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  bool _isSaving = false;
+
   String _title = '';
   int _quantity = 0;
   Category _category = categoryData[Categories.carbs]!;
 
   @override
   Widget build(BuildContext context) {
+    void saveNewItem() async {
+      if (_formKey.currentState!.validate()) {
+        setState(() {
+          _isSaving = true;
+        });
+        await Future.delayed(const Duration(seconds: 5));
+
+        _formKey.currentState!.save();
+        final response = await http.post(
+          Uri.https(url, '$topic.json'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({
+            'name': _title,
+            'quantity': _quantity,
+            'category': _category.title
+          }),
+        );
+
+        final resJson = json.decode(response.body);
+
+        if (!context.mounted) {
+          return;
+        }
+
+        Navigator.of(context).pop(GroceryItem(
+            id: resJson['name'],
+            name: _title,
+            quantity: _quantity,
+            category: _category));
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Add New Item')),
       body: Padding(
@@ -86,20 +125,25 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                      onPressed: () => _formKey.currentState!.reset(),
+                      onPressed: _isSaving
+                          ? null
+                          : () => _formKey.currentState!.reset(),
                       child: const Text('Reset')),
                   ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          Navigator.of(context).pop(GroceryItem(
-                              id: DateTime.now().toString(),
-                              name: _title,
-                              quantity: _quantity,
-                              category: _category));
-                        }
-                      },
-                      child: const Text('Add Item')),
+                      onPressed: _isSaving ? null : saveNewItem,
+                      child: _isSaving
+                          ? const Row(
+                              children: [
+                                Text('Saving...'),
+                                SizedBox(width: 6),
+                                SizedBox(
+                                  height: 16,
+                                  width: 16,
+                                  child: CircularProgressIndicator(),
+                                )
+                              ],
+                            )
+                          : const Text('Add Item')),
                 ],
               )
             ],

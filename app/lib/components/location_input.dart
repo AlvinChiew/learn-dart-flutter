@@ -60,7 +60,7 @@ class _LocationInputState extends State<LocationInput> {
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: Theme.of(context).colorScheme.onBackground),
                     )
-                  : Image(image: _location!.image),
+                  : Image(image: MemoryImage(_location!.image)),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

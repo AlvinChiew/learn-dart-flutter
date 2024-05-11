@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:app/models/place_model.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
@@ -71,5 +70,5 @@ Future<PlaceLocation> getLocation(double lat, double lng) async {
       ))
       .then((response) => response.bodyBytes);
 
-  return PlaceLocation(lat, lng, address, MemoryImage(imageByte));
+  return PlaceLocation(lat, lng, address, imageByte);
 }

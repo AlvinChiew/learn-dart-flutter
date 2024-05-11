@@ -72,7 +72,7 @@ class PlaceInputState extends ConsumerState<PlaceInputScreen> {
 
                   ref
                       .read(placeProvider.notifier)
-                      .modifyPlaces(_name, _location!, _photo!);
+                      .addPlace(_name, _location!, _photo!);
                   Navigator.of(context).pop();
                 }
               },

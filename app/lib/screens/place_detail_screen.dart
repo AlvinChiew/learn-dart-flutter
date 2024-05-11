@@ -37,7 +37,7 @@ class PlaceDetailScreen extends StatelessWidget {
                 },
                 child: CircleAvatar(
                   radius: 70,
-                  backgroundImage: place.location.image,
+                  backgroundImage: MemoryImage(place.location.image),
                 ),
               ),
               Container(

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
 import 'package:uuid/uuid.dart';
 
 const uuid = Uuid();
@@ -10,11 +10,12 @@ class PlaceLocation {
   final double latitude;
   final double longitude;
   final String address;
-  final MemoryImage image;
+  final Uint8List image;
 }
 
 class Place {
-  Place(this.title, this.location, this.image) : id = uuid.v4();
+  Place(this.title, this.location, this.image, {String? id})
+      : id = id ?? uuid.v4();
 
   final String id;
   final String title;
